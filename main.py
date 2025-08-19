@@ -29,6 +29,10 @@ def main():
           if event.type == pygame.QUIT:
             return
         #display black scren and refresh screen during each loop.
+        #UPDATING?____________________________________________________________
+        dt = clock.tick(60) / 1000
+        spaceship.update(dt)
+        #RENDERING____________________________________________________________
         screen.fill(0)
         #call the draw method of the player object to rerender the player each refresh
         spaceship.draw(screen)
@@ -36,7 +40,6 @@ def main():
         pygame.display.flip()
         #limit refresh to 1/60th second, and store number of seconds (converted from miliseconds in the DT variable)
         clock.tick(60)
-        dt = clock.tick(60) / 1000
 
 
 
