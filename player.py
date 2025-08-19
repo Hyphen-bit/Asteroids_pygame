@@ -3,6 +3,7 @@
 from circleshape import CircleShape
 from constants import PLAYER_RADIUS
 from constants import PLAYER_TURN_SPEED
+from constants import PLAYER_SPEED
 import pygame
 #we initialise the player class with x and y values only, then define the radius as the imported player radius.
 #Finally we call the parent classes constructor within the child class constructor, passing in the x, y and newly defined radius values.
@@ -30,7 +31,7 @@ class Player(CircleShape):
     def rotate(self,dt):
         self.rotation += (PLAYER_TURN_SPEED * dt)
 
-    #paste in update method
+    #paste in update method > checks key output and calls relevant method from player object
     def update(self, dt):
         keys = pygame.key.get_pressed()
 
@@ -38,3 +39,13 @@ class Player(CircleShape):
             self.rotate(-dt)
         if keys[pygame.K_d]:
             self.rotate(dt)
+        if keys[pygame.K_w]:
+            self.move(dt)
+        if keys[pygame.K_s]:
+            self.move(-dt)
+    #add move method for player object
+    def move(self,dt):
+        #vector math use a unit vector (one unit going straight up, then rotate the vector by the objects current rotation)
+        #then on next line update the position by the player speed (factoring in the delta time dt)
+        forward = pygame.Vector2(0, 1).rotate(self.rotation)
+        self.position += forward * PLAYER_SPEED * dt
