@@ -20,6 +20,12 @@ def main():
     print(f"Screen height: {SCREEN_HEIGHT}")
     screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
     #initalise the player object, specify x and y values
+    #create groups to manage objects, now refrence groups instead of individual objects when updating
+    updatables = pygame.sprite.Group()
+    drawables = pygame.sprite.Group()
+    Player.containers = (updatables,drawables)
+    #ensure player object created after setting groups to ensure they are correctly added to the groups
+
     spaceship = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
     #loop forever unless interupted
@@ -31,11 +37,13 @@ def main():
         #display black scren and refresh screen during each loop.
         #UPDATING?____________________________________________________________
         dt = clock.tick(60) / 1000
-        spaceship.update(dt)
+        updatables.update(dt)
         #RENDERING____________________________________________________________
         screen.fill(0)
         #call the draw method of the player object to rerender the player each refresh
-        spaceship.draw(screen)
+        #now iterate over drawables to draw all in group rather than just player object.
+        for item in drawables:
+           item.draw(screen)
 
         pygame.display.flip()
         #limit refresh to 1/60th second, and store number of seconds (converted from miliseconds in the DT variable)
