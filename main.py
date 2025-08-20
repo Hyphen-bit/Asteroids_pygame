@@ -51,10 +51,17 @@ def main():
         #UPDATING?____________________________________________________________
         dt = clock.tick(60) / 1000
         updatables.update(dt)
+        #collision check for asteroids with playership
         for asteroid in asteroids:
            if asteroid.collision(spaceship):
               print("Game over!")
               return
+        #collision check for asteroid destruction:
+        for asteroid in asteroids:
+           for shot in shotgroup:
+              if shot.collision(asteroid):
+                 asteroid.kill()
+                 shot.kill()
         #RENDERING____________________________________________________________
         screen.fill(0)
         #call the draw method of the player object to rerender the player each refresh

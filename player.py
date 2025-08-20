@@ -6,6 +6,7 @@ from constants import PLAYER_RADIUS
 from constants import PLAYER_TURN_SPEED
 from constants import PLAYER_SPEED
 from constants import PLAYER_SHOT_SPEED
+from constants import PLAYER_SHOOT_COOLDOWN
 import pygame
 #we initialise the player class with x and y values only, then define the radius as the imported player radius.
 #Finally we call the parent classes constructor within the child class constructor, passing in the x, y and newly defined radius values.
@@ -15,6 +16,7 @@ class Player(CircleShape):
         super().__init__(x,y,radius)
         #don't need to intitalise other properties as handled by the previous constructor.
         self.rotation = 0
+        self.refire_time = 0
 
         # in the player class
     def triangle(self):
@@ -46,7 +48,14 @@ class Player(CircleShape):
         if keys[pygame.K_s]:
             self.move(-dt)
         if keys[pygame.K_SPACE]:
-            self.shoot()
+            if self.refire_time == 0:
+                self.shoot()
+        if self.refire_time > 0:
+            #have to reduce by delta time to align with seconds
+            self.refire_time -= dt
+        if self.refire_time < 0:
+            self.refire_time = 0
+
     #add move method for player object
     def move(self,dt):
         #vector math use a unit vector (one unit going straight up, then rotate the vector by the objects current rotation)
@@ -64,6 +73,7 @@ class Player(CircleShape):
         initalvelocity = pygame.Vector2(0,1)
         rotatedvelocity = initalvelocity.rotate(self.rotation)
         bullet.velocity = rotatedvelocity * PLAYER_SHOT_SPEED
+        self.refire_time = PLAYER_SHOOT_COOLDOWN
 
 
 
