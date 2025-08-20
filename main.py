@@ -5,6 +5,8 @@ import pygame
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT
 from constants import *
 from player import Player
+from asteroid import Asteroid
+from asteroidfield import AsteroidField
 #create clock object and dt variable to manage fps and monitor time between screen updates
 clock = pygame.time.Clock()
 dt = 0
@@ -23,10 +25,16 @@ def main():
     #create groups to manage objects, now refrence groups instead of individual objects when updating
     updatables = pygame.sprite.Group()
     drawables = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
+
     Player.containers = (updatables,drawables)
+    Asteroid.containers = (asteroids, updatables, drawables)
+    AsteroidField.containers = (updatables)
+
     #ensure player object created after setting groups to ensure they are correctly added to the groups
 
     spaceship = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    Astrofield = AsteroidField()
 
     #loop forever unless interupted
     while True:
