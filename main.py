@@ -46,6 +46,10 @@ def main():
         #UPDATING?____________________________________________________________
         dt = clock.tick(60) / 1000
         updatables.update(dt)
+        for asteroid in asteroids:
+           if asteroid.collision(spaceship):
+              print("Game over!")
+              return
         #RENDERING____________________________________________________________
         screen.fill(0)
         #call the draw method of the player object to rerender the player each refresh
