@@ -7,6 +7,7 @@ from constants import *
 from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
+from shot import Shot
 #create clock object and dt variable to manage fps and monitor time between screen updates
 clock = pygame.time.Clock()
 dt = 0
@@ -26,10 +27,14 @@ def main():
     updatables = pygame.sprite.Group()
     drawables = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
+    shotgroup = pygame.sprite.Group()
 
     Player.containers = (updatables,drawables)
     Asteroid.containers = (asteroids, updatables, drawables)
     AsteroidField.containers = (updatables)
+    Shot.containers = (shotgroup,updatables,drawables)
+    
+
 
     #ensure player object created after setting groups to ensure they are correctly added to the groups
 

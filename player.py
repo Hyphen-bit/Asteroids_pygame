@@ -1,9 +1,11 @@
 #create spaceship for the player
 #import circleshape class as the parent for the new player class
 from circleshape import CircleShape
+from shot import Shot
 from constants import PLAYER_RADIUS
 from constants import PLAYER_TURN_SPEED
 from constants import PLAYER_SPEED
+from constants import PLAYER_SHOT_SPEED
 import pygame
 #we initialise the player class with x and y values only, then define the radius as the imported player radius.
 #Finally we call the parent classes constructor within the child class constructor, passing in the x, y and newly defined radius values.
@@ -43,9 +45,25 @@ class Player(CircleShape):
             self.move(dt)
         if keys[pygame.K_s]:
             self.move(-dt)
+        if keys[pygame.K_SPACE]:
+            self.shoot()
     #add move method for player object
     def move(self,dt):
         #vector math use a unit vector (one unit going straight up, then rotate the vector by the objects current rotation)
         #then on next line update the position by the player speed (factoring in the delta time dt)
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
         self.position += forward * PLAYER_SPEED * dt
+
+    def shoot(self):
+        #create new shot object
+        x = self.position[0]
+        y = self.position[1]
+        bullet = Shot(x,y)
+
+        #set shot velocity
+        initalvelocity = pygame.Vector2(0,1)
+        rotatedvelocity = initalvelocity.rotate(self.rotation)
+        bullet.velocity = rotatedvelocity * PLAYER_SHOT_SPEED
+
+
+
